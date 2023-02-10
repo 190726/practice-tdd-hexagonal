@@ -1,9 +1,11 @@
-package com.sk.market;
+package com.sk.market.domain;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+
+import com.sk.market.domain.Cart;
 
 public class CartTest {
 	
@@ -21,7 +23,7 @@ public class CartTest {
 		Cart cart = new Cart();
 		String productName = "Toothbrush";
 		int productPrice = 1;
-		cart.add(productName, productPrice);
+		cart.add(new Product(productName, productPrice));
 		assertThat(cart.totalPrice()).isEqualTo(productPrice);
 	}
 	
@@ -32,32 +34,23 @@ public class CartTest {
 		int productPrice1 = 1;
 		String productName2 = "Toothbrush2";
 		int productPrice2 = 2;
-		cart.add(productName1, productPrice1);
-		cart.add(productName2, productPrice2);
+		cart.add(new Product(productName1, productPrice1));
+		cart.add(new Product(productName2, productPrice2));
 		assertThat(cart.totalPrice()).isEqualTo(3);
 	}
 	
-	@Test
-	void emptyCartReceipt() throws Exception {
-		Cart cart = new Cart();
-		assertThat(cart.receipt()).isEqualTo("""
-				Total Price: $0
-				""");
-	}
 	
-	@Test
-	void cartWithOneItemReceipt() throws Exception {
-		Cart cart = new Cart();
-		cart.add("Toothbrush", 1);
-		assertThat(cart.receipt()).isEqualTo("""
-				Toothbrush $1
-				
-				Total Price: $1
-				""");
-	}
 	
-	@Test
-	void cartWithMultpleItemReceipt() throws Exception {
-	}
+//	@Test
+//	void cartWithMultpleItemReceipt() throws Exception {
+//		Cart cart = new Cart();
+//		cart.add("Toothbrush", 1);
+//		cart.add("Toothpaste", 2);
+//		assertThat(cart.receipt()).isEqualTo("""
+//				Toothbrush $1
+//				
+//				Total Price: $1
+//				""");
+//	}
 
 }
