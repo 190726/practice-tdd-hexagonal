@@ -9,37 +9,40 @@ import org.junit.jupiter.api.Test;
 
 public class AddProductToCartTest {
 
+	private static final String TOOTH_BRUSH_UPC = "4567";
+	private static final String TOOTH_PASTE_UPC = "0123";
+
 	@Test
 	void cartTotalAtZero() throws Exception {
-		CartService cartService = new CartService();
+		CartService cartService = new CartService(
+				new ProductPricerStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
 		BigDecimal total = cartService.total();
 		assertThat(total.intValue()).isZero();
 	}
 	
 	@Test
 	void cartTotalOneProduct() throws Exception {
-		CartService cartService = new CartService();
-		cartService.addProduct("0123");
+		CartService cartService = new CartService(new ProductPricerStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		cartService.addProduct(TOOTH_PASTE_UPC);
 		BigDecimal total = cartService.total();
 		assertThat(total.toString()).isEqualTo("1");
 	}
 	
 	@Test
 	void cartTotalMultipleProduct() throws Exception {
-		CartService cartService = new CartService();
-		cartService.addProduct("0123");
-		cartService.addProduct("4567");
+		CartService cartService = new CartService(new ProductPricerStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		cartService.addProduct(TOOTH_PASTE_UPC);
+		cartService.addProduct(TOOTH_BRUSH_UPC);
 		BigDecimal total = cartService.total();
 		assertThat(total.toString()).isEqualTo("4");
 	}
 	
 	@Test
 	void cartWithProductPlaceOrderEmptyCart() throws Exception {
-		CartService cartService = new CartService();
-		cartService.addProduct("0123");
-		cartService.finalizeOrder();
-		BigDecimal total = cartService.total();
-		assertThat(total).isEqualTo("0");
-		assertThat(cartService.isEmpty()).isTrue();
+		CartService cartService = new CartService(new ProductPricerStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		cartService.addProduct(TOOTH_PASTE_UPC);
+		Receipt receipt = cartService.finalizeOrder();
+		assertThat(receipt.total()).isEqualTo("1");
+		assertThat(receipt.products()).containsExactly(TOOTH_PASTE_UPC);
 	}
 }
