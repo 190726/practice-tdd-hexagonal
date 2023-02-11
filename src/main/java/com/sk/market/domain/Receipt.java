@@ -1,4 +1,4 @@
-package com.sk.market.application;
+package com.sk.market.domain;
 
 import java.math.BigDecimal;
 import java.util.List;

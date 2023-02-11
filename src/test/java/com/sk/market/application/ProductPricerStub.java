@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.sk.market.application.port.ProductPricer;
+
 public class ProductPricerStub implements ProductPricer{
 	
 	private  final Map<String, BigDecimal> productToPriceMap = new HashMap<>();

@@ -7,7 +7,9 @@ import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
 
-public class AddProductToCartTest {
+import com.sk.market.domain.Receipt;
+
+public class PlaceOrderTest {
 
 	private static final String TOOTH_BRUSH_UPC = "4567";
 	private static final String TOOTH_PASTE_UPC = "0123";
