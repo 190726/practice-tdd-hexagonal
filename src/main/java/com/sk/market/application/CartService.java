@@ -5,47 +5,36 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.sk.market.application.port.ProductPricer;
+import com.sk.market.application.port.ProductPriceFetcher;
+import com.sk.market.domain.Cart;
 import com.sk.market.domain.Receipt;
 
 public class CartService {
 	
-	private BigDecimal total = BigDecimal.ZERO;
-	private final ProductPricer productPricer;
-	private boolean isEmpty = true;
-	private List<String> products = new ArrayList<>();
+	private final ProductPriceFetcher productPricer;
 	
-	public CartService(ProductPricer productPricer) {
+	private final Cart cart = new Cart();
+	
+	public CartService(ProductPriceFetcher productPricer) {
 		this.productPricer = productPricer;
 	}
 
 	public BigDecimal total() {
-		return total;
+		return cart.total();
 	}
 
-	public void addProduct(String productName) {
-		isEmpty = false;
-		products.add(productName);
-		total = total.add(productPricer.priceFor(productName));
+	public void addProduct(String upc) {
+		cart.add(upc, productPricer.priceFor(upc));
 	}
 	
 	public Receipt finalizeOrder() {
-		
-		requireCartNotEmpty();
-		
-		Receipt receipt = new Receipt(total ,products);
-		
-		total = BigDecimal.ZERO;
-		isEmpty = true;
-		
+		cart.requireCartNotEmpty();
+		Receipt receipt = cart.receipt();
+		cart.makeEmpty();
 		return receipt;
 	}
 
-	private void requireCartNotEmpty() {
-		if(isEmpty()) throw new NoProductInCartException();
-	}
-	
 	public boolean isEmpty() {
-		return isEmpty;
+		return cart.isEmpty();
 	}
 }
