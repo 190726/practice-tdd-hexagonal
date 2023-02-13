@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.sk.market.application.port.ProductPriceFetcher;
 import com.sk.market.domain.Cart;
+import com.sk.market.domain.Product;
 import com.sk.market.domain.Receipt;
 
 public class CartService {
@@ -24,13 +25,13 @@ public class CartService {
 	}
 
 	public void addProduct(String upc) {
-		cart.add(upc, productPricer.priceFor(upc));
+		BigDecimal price = productPricer.priceFor(upc);
+		cart.add(new Product(upc, productPricer.priceFor(upc)));
 	}
 	
 	public Receipt finalizeOrder() {
 		cart.requireCartNotEmpty();
 		Receipt receipt = cart.receipt();
-		cart.makeEmpty();
 		return receipt;
 	}
 

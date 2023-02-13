@@ -10,14 +10,22 @@ import org.junit.jupiter.api.Test;
 public class SpecialDealsCartTest {
 	
 	private static final String TOOTH_BRUSH_UPC = "4567";
-	private static final String TOOTH_PASTE_UPC = "0123";
+	private static final String TOOTH_TEN_PERCENT_DISCOUNT_UPC = "0987";
+	
+	@Test
+	void oneItemsInCartDiscountTest() throws Exception {
+		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_TEN_PERCENT_DISCOUNT_UPC, BigDecimal.TEN, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
+		BigDecimal total = cartService.total();
+		assertThat(total).isEqualTo("9.0");
+	}
 	
 	@Test
 	void twoSameItemsInCartDiscountTest() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
-		cartService.addProduct(TOOTH_PASTE_UPC);
-		cartService.addProduct(TOOTH_PASTE_UPC);
+		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_TEN_PERCENT_DISCOUNT_UPC, BigDecimal.TEN, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
+		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
 		BigDecimal total = cartService.total();
-		assertThat(total.toString()).isEqualTo("1.5");
+		assertThat(total).isEqualTo("14.0");
 	}
 }

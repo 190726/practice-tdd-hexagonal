@@ -10,15 +10,26 @@ public class Cart {
 	
 	private BigDecimal total = BigDecimal.ZERO;
 	private List<String> products = new ArrayList<>();
-	private boolean isEmpty = true;
-
-	public void add(String upc, BigDecimal price) {
-		isEmpty = false;
-		total = total.add(price);
+	
+	public boolean add(Product product) {
+		String upc = product.upc();
+		BigDecimal price = product.price();
+		
+		BigDecimal actualPrice = discountedProductPrice(product);
 		if(products.contains(upc)) {
-			total = total.subtract(price.divide(BigDecimal.valueOf(2)));
+			actualPrice = price.divide(BigDecimal.valueOf(2));
 		}
-		products.add(upc);
+		total = total.add(actualPrice);
+		return products.add(upc);
+	}
+
+	private BigDecimal discountedProductPrice(Product product) {
+		BigDecimal actualPrice = product.price();
+		String upc = product.upc();
+		if(upc.equals("0987")) {
+			actualPrice = product.price().multiply(BigDecimal.valueOf(0.9));
+		}
+		return actualPrice;
 	}
 
 	public List<String> products() {
@@ -29,13 +40,8 @@ public class Cart {
 		return this.total;
 	}
 
-	public void makeEmpty() {
-		total = BigDecimal.ZERO;
-		isEmpty = true;
-	}
-
 	public boolean isEmpty() {
-		return isEmpty;
+		return products.isEmpty();
 	}
 
 	public Receipt receipt() {
@@ -45,4 +51,5 @@ public class Cart {
 	public void requireCartNotEmpty() {
 		if(isEmpty()) throw new NoProductInCartException();
 	}
+
 }
