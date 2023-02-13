@@ -13,8 +13,12 @@ public class Cart {
 	private boolean isEmpty = true;
 
 	public void add(String upc, BigDecimal price) {
-		products.add(upc);
+		isEmpty = false;
 		total = total.add(price);
+		if(products.contains(upc)) {
+			total = total.subtract(price.divide(BigDecimal.valueOf(2)));
+		}
+		products.add(upc);
 	}
 
 	public List<String> products() {
