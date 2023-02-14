@@ -25,6 +25,7 @@ public class CartService {
 	}
 
 	public void addProduct(String upc) {
+		
 		cart.add(new Product(upc, productPricer.priceFor(upc)));
 	}
 	

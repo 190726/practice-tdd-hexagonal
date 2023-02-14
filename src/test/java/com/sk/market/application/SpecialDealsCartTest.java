@@ -12,9 +12,6 @@ import com.sk.market.domain.Product;
 
 public class SpecialDealsCartTest {
 	
-	private static final String TOOTH_BRUSH_UPC = "4567";
-	private static final String TOOTH_TEN_PERCENT_DISCOUNT_UPC = "0987";
-	
 	@Test
 	void twoItemsInCartDiscountTest() throws Exception {
 		Cart cart = new Cart();
@@ -22,7 +19,7 @@ public class SpecialDealsCartTest {
 		cart.add(new Product("0123", BigDecimal.ONE));
 		cart.add(new Product("0123", BigDecimal.ONE));
 
-		assertThat(cart.total()).isEqualTo("1.5");
+		assertThat(cart.total()).isEqualByComparingTo("1.5");
 		
 	}
 	
@@ -34,7 +31,7 @@ public class SpecialDealsCartTest {
 		cart.add(new Product("0123", BigDecimal.ONE));
 		cart.add(new Product("0123", BigDecimal.ONE));
 
-		assertThat(cart.total()).isEqualTo("2.0");
+		assertThat(cart.total()).isEqualByComparingTo("2");
 	}
 	
 	@Test
@@ -43,7 +40,7 @@ public class SpecialDealsCartTest {
 		
 		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
 
-		assertThat(cart.total()).isEqualTo("9.0");
+		assertThat(cart.total()).isEqualByComparingTo("9");
 	}
 	
 	@Test
@@ -53,7 +50,7 @@ public class SpecialDealsCartTest {
 		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
 		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
 
-		assertThat(cart.total()).isEqualTo("15");
+		assertThat(cart.total()).isEqualByComparingTo("15");
 	}
 	
 }

@@ -12,6 +12,10 @@ public class ProductPriceFetcherStub implements ProductPriceFetcher{
 	
 	public ProductPriceFetcherStub() {
 	}
+	
+	public ProductPriceFetcherStub(String upc1, BigDecimal price1) {
+		productToPriceMap.put(upc1, price1 );
+	}
 
 	public ProductPriceFetcherStub(String upc1, BigDecimal price1, String upc2, BigDecimal price2) {
 		productToPriceMap.put(upc1, price1 );
@@ -19,9 +23,9 @@ public class ProductPriceFetcherStub implements ProductPriceFetcher{
 	}
 
 	@Override
-	public BigDecimal priceFor(String productName) {
-		BigDecimal result = productToPriceMap.get(productName);
-		if(result == null) return BigDecimal.ZERO;
+	public BigDecimal priceFor(String upc) {
+		BigDecimal result = productToPriceMap.get(upc);
+		if(result == null)  throw new ProdutNotFound(upc);
 		return result;
 	}
 }
