@@ -1,11 +1,14 @@
 package com.sk.market.application;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
 
 import org.junit.jupiter.api.Test;
+
+import com.sk.market.domain.Cart;
+import com.sk.market.domain.DiscountRule;
+import com.sk.market.domain.Product;
 
 public class SpecialDealsCartTest {
 	
@@ -13,28 +16,44 @@ public class SpecialDealsCartTest {
 	private static final String TOOTH_TEN_PERCENT_DISCOUNT_UPC = "0987";
 	
 	@Test
-	void oneItemsInCartDiscountTest() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_TEN_PERCENT_DISCOUNT_UPC, BigDecimal.TEN, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
-		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
-		BigDecimal total = cartService.total();
-		assertThat(total).isEqualTo("9.0");
+	void twoItemsInCartDiscountTest() throws Exception {
+		Cart cart = new Cart();
+		
+		cart.add(new Product("0123", BigDecimal.ONE));
+		cart.add(new Product("0123", BigDecimal.ONE));
+
+		assertThat(cart.total()).isEqualTo("1.5");
+		
 	}
 	
 	@Test
-	void specialTwoSameItemsInCartDiscountTest() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_TEN_PERCENT_DISCOUNT_UPC, BigDecimal.TEN, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
-		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
-		cartService.addProduct(TOOTH_TEN_PERCENT_DISCOUNT_UPC);
-		BigDecimal total = cartService.total();
-		assertThat(total).isEqualTo("18.0");
+	void threeItemsInCartDiscountTest() throws Exception {
+		Cart cart = new Cart();
+		
+		cart.add(new Product("0123", BigDecimal.ONE));
+		cart.add(new Product("0123", BigDecimal.ONE));
+		cart.add(new Product("0123", BigDecimal.ONE));
+
+		assertThat(cart.total()).isEqualTo("2.0");
 	}
 	
 	@Test
-	void twoSameItemsInCartDiscountTest() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_TEN_PERCENT_DISCOUNT_UPC, BigDecimal.TEN, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
-		cartService.addProduct(TOOTH_BRUSH_UPC);
-		cartService.addProduct(TOOTH_BRUSH_UPC);
-		BigDecimal total = cartService.total();
-		assertThat(total).isEqualTo("4.5");
+	void tenPercentDiscountItemTest() throws Exception {
+		Cart cart = new Cart();
+		
+		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
+
+		assertThat(cart.total()).isEqualTo("9.0");
 	}
+	
+	@Test
+	void tenPercentDiscountTwoItemTest() throws Exception {
+		Cart cart = new Cart();
+		
+		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
+		cart.add(new Product("4567", BigDecimal.TEN, DiscountRule.TEN_PERCENT_OFF));
+
+		assertThat(cart.total()).isEqualTo("15");
+	}
+	
 }

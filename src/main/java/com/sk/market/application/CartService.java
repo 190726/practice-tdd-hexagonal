@@ -25,7 +25,6 @@ public class CartService {
 	}
 
 	public void addProduct(String upc) {
-		BigDecimal price = productPricer.priceFor(upc);
 		cart.add(new Product(upc, productPricer.priceFor(upc)));
 	}
 	
@@ -33,9 +32,5 @@ public class CartService {
 		cart.requireCartNotEmpty();
 		Receipt receipt = cart.receipt();
 		return receipt;
-	}
-
-	public boolean isEmpty() {
-		return cart.isEmpty();
 	}
 }
