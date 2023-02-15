@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.sk.market.application.port.ProductPriceFetcher;
 import com.sk.market.domain.Cart;
+import com.sk.market.domain.DiscountRule;
 import com.sk.market.domain.Product;
 import com.sk.market.domain.Receipt;
 
@@ -15,9 +16,12 @@ public class CartService {
 	private final ProductPriceFetcher productPricer;
 	
 	private final Cart cart = new Cart();
+
+	private final DiscountFetcher discountFetcher;
 	
-	public CartService(ProductPriceFetcher productPricer) {
+	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher) {
 		this.productPricer = productPricer;
+		this.discountFetcher = discountFetcher;
 	}
 
 	public BigDecimal total() {
@@ -26,7 +30,8 @@ public class CartService {
 
 	public void addProduct(String upc) {
 		
-		cart.add(new Product(upc, productPricer.priceFor(upc)));
+		cart.add(new Product(
+				upc, productPricer.priceFor(upc), discountFetcher.getRule(upc)));
 	}
 	
 	public Receipt finalizeOrder() {

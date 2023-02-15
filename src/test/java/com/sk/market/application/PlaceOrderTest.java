@@ -17,14 +17,14 @@ public class PlaceOrderTest {
 	@Test
 	void cartTotalAtZero() throws Exception {
 		CartService cartService = new CartService(
-				new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+				new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)), new StupDiscountFetcher());
 		BigDecimal total = cartService.total();
 		assertThat(total.intValue()).isZero();
 	}
 	
 	@Test
 	void cartTotalOneProduct() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)), new StupDiscountFetcher());
 		cartService.addProduct(TOOTH_PASTE_UPC);
 		BigDecimal total = cartService.total();
 		assertThat(total.toString()).isEqualTo("1");
@@ -32,7 +32,7 @@ public class PlaceOrderTest {
 	
 	@Test
 	void cartTotalMultipleProduct() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)), new StupDiscountFetcher());
 		cartService.addProduct(TOOTH_PASTE_UPC);
 		cartService.addProduct(TOOTH_BRUSH_UPC);
 		BigDecimal total = cartService.total();
@@ -41,7 +41,7 @@ public class PlaceOrderTest {
 	
 	@Test
 	void cartWithProductPlaceOrderEmptyCart() throws Exception {
-		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)));
+		CartService cartService = new CartService(new ProductPriceFetcherStub(TOOTH_PASTE_UPC, BigDecimal.ONE, TOOTH_BRUSH_UPC, BigDecimal.valueOf(3)), new StupDiscountFetcher());
 		cartService.addProduct(TOOTH_PASTE_UPC);
 		Receipt receipt = cartService.finalizeOrder();
 		assertThat(receipt.total()).isEqualTo("1");
