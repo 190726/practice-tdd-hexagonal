@@ -1,4 +1,4 @@
-package com.sk.market.application;
+package com.sk.market.application.port;
 
 import com.sk.market.domain.DiscountRule;
 

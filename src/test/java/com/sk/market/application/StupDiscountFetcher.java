@@ -1,5 +1,6 @@
 package com.sk.market.application;
 
+import com.sk.market.application.port.DiscountFetcher;
 import com.sk.market.domain.DiscountRule;
 
 public class StupDiscountFetcher implements DiscountFetcher {
