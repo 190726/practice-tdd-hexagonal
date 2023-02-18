@@ -8,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.view.groovy.GroovyMarkupConfig;
 
+import com.sk.market.adapter.out.fetcher.ExternalProductPriceFetcher;
 import com.sk.market.application.CartService;
+import com.sk.market.application.port.ProductPriceFetcher;
 import com.sk.market.domain.DiscountRule;
 
 import antlr.TokenWithIndex;
@@ -20,7 +22,12 @@ public class PracticeApplication {
 	}
 	
 	@Bean
-	public CartService cartService() {
-		return new CartService(upc -> BigDecimal.ONE, upc -> DiscountRule.NONE);
+	public CartService cartService(ProductPriceFetcher priceFetcher) {
+		return new CartService(priceFetcher, upc -> DiscountRule.NONE);
+	}
+	
+	@Bean
+	public ProductPriceFetcher priceFetcher() {
+		return new ExternalProductPriceFetcher();
 	}
 }
