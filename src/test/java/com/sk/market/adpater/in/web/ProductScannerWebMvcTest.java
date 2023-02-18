@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -27,8 +27,9 @@ public class ProductScannerWebMvcTest {
 	
 	@Test
 	void postRootPathIsRedirect() throws Exception {
-		 mockMvc.perform(post("/"))
-		 		.andExpect(status().is3xxRedirection());
+		 mockMvc.perform(post("/").param("upc", "0123"))
+		 		.andExpect(status().is3xxRedirection())
+		 		.andExpect(redirectedUrl("/"));
 	}
 	
 }

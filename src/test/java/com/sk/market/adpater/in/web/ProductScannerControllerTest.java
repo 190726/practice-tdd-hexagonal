@@ -44,6 +44,7 @@ public class ProductScannerControllerTest {
 		
 		assertThat(page).isEqualTo("scan");
 		assertThat(model.containsAttribute("upc")).isTrue();
+		assertThat(model.getAttribute("total")).isEqualTo("0");
 	}
 	
 	@Test

@@ -21,6 +21,6 @@ public class PracticeApplication {
 	
 	@Bean
 	public CartService cartService() {
-		return new CartService(upc -> BigDecimal.ZERO, upc -> DiscountRule.NONE);
+		return new CartService(upc -> BigDecimal.ONE, upc -> DiscountRule.NONE);
 	}
 }
