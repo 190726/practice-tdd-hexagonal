@@ -2,6 +2,8 @@ package com.sk.market.adapter.in.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,6 +26,7 @@ public class ScannerController {
 	
 	@PostMapping("/")
 	public String addProduct(String upc) {
+		Assert.hasText(upc, "upc is not empty!");
 		cartService.addProduct(upc);
 		return "redirect:";
 	}

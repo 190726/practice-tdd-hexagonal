@@ -48,10 +48,20 @@ public class ProductScannerControllerTest {
 	
 	@Test
 	void postValidUpcThenProductAddedToCart() throws Exception {
-		CartService cartService = new CartService(DUMMY_PRODUCT_PRICE_FETCHER, DUMMY_DISCOUNT_FETCHER);
+		CartService cartService = createCartServiceWithDummies();
 		ScannerController controller = new ScannerController(cartService);
 		controller.addProduct(TOOTHPASTE_UPC);
 		assertThat(cartService.finalizeOrder().products()).containsExactly(TOOTHPASTE_UPC);
 	}
 	
+	@Test
+	public void postEmptyUpcThenRedirectToErrorPage() throws Exception {
+		CartService cartService = createCartServiceWithDummies();
+		ScannerController controller = new ScannerController(cartService);
+		assertThrowsExactly(IllegalArgumentException.class, () -> controller.addProduct("") );
+	}
+	
+	private CartService createCartServiceWithDummies() {
+		return new CartService(DUMMY_PRODUCT_PRICE_FETCHER, DUMMY_DISCOUNT_FETCHER);
+	}
 }
