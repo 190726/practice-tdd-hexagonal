@@ -15,10 +15,10 @@ import com.sk.market.domain.Receipt;
 public class CartService {
 	
 	private final ProductPriceFetcher productPricer;
-	
-	private final Cart cart = new Cart();
 
 	private final DiscountFetcher discountFetcher;
+	
+	private final Cart cart = new Cart();
 	
 	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher) {
 		this.productPricer = productPricer;
