@@ -19,10 +19,20 @@ public class CartService {
 	private final DiscountFetcher discountFetcher;
 	
 	private final Cart cart = new Cart();
+
+	private final CartNotifier notifier;
 	
 	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher) {
 		this.productPricer = productPricer;
 		this.discountFetcher = discountFetcher;
+		this.notifier = (upc, price) -> {};
+	}
+
+	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher,
+			CartNotifier notifier) {
+		this.productPricer = productPricer;
+		this.discountFetcher = discountFetcher;
+		this.notifier = notifier;
 	}
 
 	public BigDecimal total() {
@@ -30,9 +40,10 @@ public class CartService {
 	}
 
 	public void addProduct(String upc) {
-		
+		BigDecimal price = productPricer.priceFor(upc);
 		cart.add(new Product(
-				upc, productPricer.priceFor(upc), discountFetcher.getRule(upc)));
+				upc, price, discountFetcher.getRule(upc)));
+		notifier.productAdded(upc, price);
 	}
 	
 	public Receipt finalizeOrder() {
