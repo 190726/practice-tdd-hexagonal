@@ -1,9 +1,11 @@
 package com.sk.movie.application;
 
+import com.sk.ServiceBean;
 import com.sk.movie.application.model.ReserveServiceCommand;
 import com.sk.movie.application.port.ScreenFetcher;
 import com.sk.movie.domain.Ticket;
 
+@ServiceBean
 public class ReserveService {
 
 	private final ScreenFetcher screenFetcher;

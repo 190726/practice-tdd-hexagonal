@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+import com.sk.ServiceBean;
 import com.sk.market.application.port.DiscountFetcher;
 import com.sk.market.application.port.ProductPriceFetcher;
 import com.sk.market.domain.Cart;
@@ -12,6 +15,7 @@ import com.sk.market.domain.DiscountRule;
 import com.sk.market.domain.Product;
 import com.sk.market.domain.Receipt;
 
+@Service
 public class CartService {
 	
 	private final ProductPriceFetcher productPricer;
@@ -20,19 +24,12 @@ public class CartService {
 	
 	private final Cart cart = new Cart();
 
-	private final CartNotifier notifier;
+	private final CartNotifier notifier = (upc, price) -> {};
 	
+
 	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher) {
 		this.productPricer = productPricer;
 		this.discountFetcher = discountFetcher;
-		this.notifier = (upc, price) -> {};
-	}
-
-	public CartService(ProductPriceFetcher productPricer, DiscountFetcher discountFetcher,
-			CartNotifier notifier) {
-		this.productPricer = productPricer;
-		this.discountFetcher = discountFetcher;
-		this.notifier = notifier;
 	}
 
 	public BigDecimal total() {

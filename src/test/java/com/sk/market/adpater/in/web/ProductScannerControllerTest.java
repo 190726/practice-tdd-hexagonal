@@ -63,6 +63,6 @@ public class ProductScannerControllerTest {
 	}
 	
 	private CartService createCartServiceWithDummies() {
-		return new CartService(DUMMY_PRODUCT_PRICE_FETCHER, DUMMY_DISCOUNT_FETCHER, (upc, price)->{System.out.println(upc + ":" + price);});
+		return new CartService(DUMMY_PRODUCT_PRICE_FETCHER, DUMMY_DISCOUNT_FETCHER);
 	}
 }

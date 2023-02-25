@@ -28,7 +28,6 @@ public class ReserveServiceTest {
 	void reserveTest() throws Exception {
 		//given
 		ReserveService service = new ReserveService(screenFetcher);
-		
 		ReserveServiceCommand serviceCommand = new ReserveServiceCommand("1111", 2);
 		//when
 		Ticket ticket = service.reserve(serviceCommand);
