@@ -1,4 +1,4 @@
-package com.sk.movie.application;
+package com.sk.movie.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
